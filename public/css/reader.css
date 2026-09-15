@@ -1,0 +1,146 @@
+/* ============================================================
+   阅读页排版：主题 / 字号 / 字体 / 行距 / 沉浸 / 目录抽屉
+   ============================================================ */
+
+/* 阅读主题色（由 JS 按用户选择写入 --reader-bg 等变量） */
+body.reader-page { background: var(--reader-bg, var(--bg)); color: var(--reader-text, var(--text)); }
+
+.reader {
+  max-width: 760px; margin: 0 auto; padding: 32px 20px 80px;
+  color: var(--reader-text, var(--text));
+}
+
+/* 阅读页顶栏 */
+.reader-topbar {
+  position: sticky; top: 0; z-index: 60;
+  background: color-mix(in srgb, var(--reader-bg, var(--surface)) 90%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+  height: 52px;
+  transition: transform 0.25s ease;
+}
+.reader-topbar-inner { display: flex; align-items: center; gap: 10px; height: 100%; }
+.reader-topbar .tbtn {
+  border: none; background: transparent; color: var(--text-2); font-size: 15px;
+  padding: 6px; border-radius: var(--radius-sm); transition: background 0.15s, color 0.15s;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.reader-topbar .tbtn:hover { background: var(--surface-2); color: var(--text); }
+.reader-topbar .title-clip {
+  flex: 1; text-align: center; font-size: 15px; font-weight: 600;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* 沉浸模式：顶栏隐藏 */
+body.reader-immersive .reader-topbar { transform: translateY(-100%); }
+body.reader-immersive .reader { padding-top: 24px; }
+
+/* 阅读页顶栏全局导航（详情 / 首页 / 排行 / 收藏） */
+.reader-topbar .nav-links { display: flex; align-items: center; gap: 2px; }
+.reader-topbar .tbtn .tl { margin-left: 3px; }
+
+/* 沉浸模式浮动出口按钮组（回详情 / 回首页 / 退出沉浸） */
+.reader-float-actions {
+  position: fixed; right: 20px; bottom: 26px; z-index: 80;
+  display: flex; align-items: center; gap: 10px;
+  opacity: 0; pointer-events: none; transition: opacity 0.2s;
+}
+body.reader-immersive .reader-float-actions { opacity: 1; pointer-events: auto; }
+.float-act {
+  border: 1px solid var(--line); background: var(--surface); color: var(--text-2);
+  padding: 8px 14px; border-radius: 999px; font-size: 13px; font-weight: 600;
+  box-shadow: var(--shadow); text-decoration: none;
+  transition: color .15s, border-color .15s;
+}
+.float-act:hover { color: var(--text); border-color: var(--accent); }
+.reader-exit-immersive {
+  border: none; background: var(--accent); color: #fff; padding: 8px 18px;
+  border-radius: 999px; font-size: 13px; font-weight: 600; box-shadow: var(--shadow);
+}
+
+/* 设置弹层 */
+.reader-settings { position: relative; }
+.settings-popover {
+  position: absolute; top: 42px; right: 0; z-index: 70;
+  width: 268px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+  box-shadow: var(--shadow); padding: 16px; display: none;
+}
+.settings-popover.open { display: block; }
+.setting-row { margin-bottom: 14px; }
+.setting-row:last-child { margin-bottom: 0; }
+.setting-label { font-size: 12.5px; color: var(--text-2); margin-bottom: 7px; }
+.seg { display: flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.seg button { flex: 1; border: none; background: transparent; padding: 6px 0; font-size: 13px; color: var(--text-2); }
+.seg button.active { background: var(--accent); color: #fff; }
+/* 主题色块 */
+.theme-swatches { display: flex; gap: 10px; }
+.theme-swatch { width: 34px; height: 26px; border-radius: 6px; border: 2px solid var(--line); cursor: pointer; transition: transform .1s; }
+.theme-swatch:hover { transform: scale(1.08); }
+.theme-swatch.active { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+.theme-swatch.light { background: #fffdf7; }
+.theme-swatch.dark { background: #1b1a18; }
+.theme-swatch.sepia { background: #f0e6cc; }
+.theme-swatch.green { background: #cde8d1; }
+
+/* 正文 */
+.reader-head { text-align: center; margin: 34px 0 26px; }
+.reader-book-title { font-size: 15px; color: var(--reader-sub, var(--text-2)); }
+.reader-book-title a:hover { color: var(--accent); }
+.reader-chapter-title { font-size: 24px; font-weight: 800; margin-top: 6px; color: var(--reader-text, var(--text)); }
+
+.reader-content {
+  font-size: var(--reader-font-size, 18px);
+  line-height: var(--reader-line-height, 1.95);
+  letter-spacing: 0.02em;
+  text-align: justify;
+  color: var(--reader-text, var(--text));
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.reader-content p { margin: 0 0 1em; }
+
+.reader-nav { display: flex; gap: 12px; margin-top: 44px; }
+.reader-nav .btn { flex: 1; justify-content: center; }
+.reader-nav .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.reader-progress-hint { text-align: center; color: var(--reader-sub, var(--text-2)); font-size: 13px; margin-top: 16px; }
+
+/* 读完自动翻章浮层 */
+.auto-next-float {
+  position: fixed; left: 50%; bottom: 80px; transform: translateX(-50%);
+  background: var(--accent); color: #fff; padding: 10px 22px; border-radius: 999px;
+  font-size: 14px; box-shadow: var(--shadow); z-index: 80; display: none;
+}
+.auto-next-float.show { display: block; animation: floatIn 0.25s; }
+@keyframes floatIn { from { opacity: 0; transform: translateX(-50%) translateY(8px); } }
+
+/* ---------- 目录抽屉 ---------- */
+.drawer-mask {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 90;
+  opacity: 0; pointer-events: none; transition: opacity 0.25s;
+}
+.drawer-mask.open { opacity: 1; pointer-events: auto; }
+.drawer {
+  position: fixed; top: 0; left: 0; bottom: 0; width: 300px; max-width: 82vw; z-index: 100;
+  background: var(--surface); border-right: 1px solid var(--line);
+  transform: translateX(-100%); transition: transform 0.28s ease;
+  display: flex; flex-direction: column;
+}
+.drawer.open { transform: translateX(0); }
+.drawer-head { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px; border-bottom: 1px solid var(--line); font-weight: 700; }
+.drawer-head button { border: none; background: transparent; font-size: 18px; color: var(--text-2); }
+.drawer-list { overflow-y: auto; flex: 1; padding: 8px 0; }
+.drawer-list a {
+  display: block; padding: 11px 18px; font-size: 14px; color: var(--text-2);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: background 0.12s;
+}
+.drawer-list a:hover { background: var(--surface-2); color: var(--text); }
+.drawer-list a.current { color: var(--accent); font-weight: 600; background: var(--accent-soft); }
+
+@media (max-width: 700px) {
+  .settings-popover { right: -40px; }
+  /* 窄屏顶栏只留「详情 / 首页」图标，隐藏「排行 / 收藏」 */
+  .reader-topbar .tbtn .tl { display: none; }
+  .reader-topbar .nav-wide { display: none; }
+  .reader-float-actions { right: 12px; bottom: 18px; }
+}

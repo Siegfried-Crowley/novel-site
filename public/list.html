@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>全部小说 · 公益书坊</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/"><span class="logo">📖</span><span>公益<em class="accent">书坊</em></span></a>
+      <nav class="nav">
+        <a href="/" data-page="home">首页</a>
+        <a href="/rank" data-page="rank">排行榜</a>
+        <a href="/list" data-page="list">全部小说</a>
+        <a href="/favorites" data-page="favorites">我的收藏</a>
+      </nav>
+      <div class="header-right">
+        <div class="search-box">
+          <input type="text" placeholder="搜书名 / 作者…" id="searchInput">
+          <span class="icon">🔍</span>
+        </div>
+        <button class="theme-toggle" title="切换主题">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="section">
+      <div class="section-head">
+        <h2 class="section-title">全部小说</h2>
+      </div>
+      <!-- 分类筛选 -->
+      <div class="cat-nav" id="catNav"></div>
+      <!-- 排序 / 筛选 -->
+      <div class="toolbar">
+        <select id="sortSelect">
+          <option value="updated">最新更新</option>
+          <option value="created">最新入库</option>
+          <option value="views">阅读量最高</option>
+          <option value="favorites">收藏最多</option>
+          <option value="word_count">字数最多</option>
+        </select>
+        <select id="statusSelect">
+          <option value="">全部状态</option>
+          <option value="serial">连载中</option>
+          <option value="finished">已完结</option>
+        </select>
+        <select id="wordsSelect">
+          <option value="">不限字数</option>
+          <option value="100000">10万字以上</option>
+          <option value="500000">50万字以上</option>
+          <option value="1000000">100万字以上</option>
+        </select>
+        <span style="color:var(--text-2);font-size:13px" id="countLabel"></span>
+      </div>
+      <!-- 热门搜索 -->
+      <div class="hot-search" id="hotTags" style="margin-bottom:16px;display:none"></div>
+      <div class="book-grid" id="grid"></div>
+      <div class="empty-state" id="empty" style="display:none">
+        <div class="emoji">🔍</div>没有找到相关书籍
+      </div>
+      <div class="pagination" id="pagination"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer container">
+    <p>公益免费阅读 · 本站内容仅供学习交流，版权归原作者所有</p>
+  </footer>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/list.js"></script>
+</body>
+</html>

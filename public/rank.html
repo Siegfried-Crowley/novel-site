@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>排行榜 · 公益书坊</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .rank-tabs { display: flex; gap: 10px; margin: 22px 0 20px; }
+    .rank-tab { padding: 9px 22px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--text-2); font-size: 14.5px; }
+    .rank-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+    .rank-list { display: flex; flex-direction: column; }
+    .rank-item { display: flex; align-items: center; gap: 16px; padding: 14px 12px; border-radius: var(--radius-sm); transition: background 0.12s; }
+    .rank-item:hover { background: var(--surface); }
+    .rank-no { width: 34px; font-size: 20px; font-weight: 800; text-align: center; font-style: italic; color: var(--text-2); flex-shrink: 0; }
+    .rank-item:nth-child(1) .rank-no { color: #f5a623; }
+    .rank-item:nth-child(2) .rank-no { color: #b8bec6; }
+    .rank-item:nth-child(3) .rank-no { color: #cd7f32; }
+    .rank-cover { width: 52px; aspect-ratio: 3/4; object-fit: cover; border-radius: 4px; box-shadow: var(--shadow); flex-shrink: 0; }
+    .rank-mid { flex: 1; min-width: 0; }
+    .rank-mid .t { font-size: 16px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .rank-mid .sub { font-size: 13px; color: var(--text-2); margin-top: 2px; }
+    .rank-stat { font-size: 13px; color: var(--text-2); flex-shrink: 0; }
+    .rank-stat b { color: var(--accent); font-size: 15px; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/"><span class="logo">📖</span><span>公益<em class="accent">书坊</em></span></a>
+      <nav class="nav">
+        <a href="/" data-page="home">首页</a>
+        <a href="/rank" data-page="rank">排行榜</a>
+        <a href="/list" data-page="list">全部小说</a>
+        <a href="/favorites" data-page="favorites">我的收藏</a>
+      </nav>
+      <div class="header-right">
+        <div class="search-box"><input type="text" placeholder="搜书名 / 作者…"><span class="icon">🔍</span></div>
+        <button class="theme-toggle" title="切换主题">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="rank-tabs">
+      <button class="rank-tab active" data-type="views">📈 阅读榜</button>
+      <button class="rank-tab" data-type="favorites">❤️ 收藏榜</button>
+      <button class="rank-tab" data-type="updated">🆕 更新榜</button>
+    </div>
+    <div class="rank-list" id="rankList"></div>
+  </main>
+
+  <footer class="site-footer container">
+    <p>公益免费阅读 · 本站内容仅供学习交流，版权归原作者所有</p>
+  </footer>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/rank.js"></script>
+</body>
+</html>

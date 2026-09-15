@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>评论管理 · 公益书坊</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .admin-header { border-bottom: 1px solid var(--line); background: var(--surface); }
+    .admin-header .inner { display: flex; align-items: center; gap: 18px; height: 58px; }
+    .admin-header h1 { font-size: 17px; font-weight: 700; }
+    .admin-header .links { margin-left: auto; display: flex; gap: 14px; font-size: 14px; color: var(--text-2); }
+    .admin-header .links a:hover { color: var(--accent); }
+    .table { width: 100%; border-collapse: collapse; margin-top: 20px; background: var(--surface); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+    .table th { text-align: left; font-size: 13px; color: var(--text-2); font-weight: 600; padding: 12px 14px; border-bottom: 1px solid var(--line); background: var(--surface-2); }
+    .table td { padding: 10px 14px; border-bottom: 1px solid var(--line); font-size: 14px; vertical-align: middle; }
+    .table tr:last-child td { border-bottom: none; }
+    .table tr:hover td { background: var(--surface-2); }
+    .op-btn { border: none; background: transparent; color: var(--text-2); font-size: 13.5px; padding: 4px 10px; border-radius: 5px; }
+    .op-btn.danger:hover { background: rgba(224,91,74,.12); color: #e05b4a; }
+    .c-content { max-width: 420px; line-height: 1.7; word-break: break-word; }
+    .filter-bar { display: flex; gap: 10px; align-items: center; margin-top: 20px; flex-wrap: wrap; }
+    .filter-bar input {
+      padding: 8px 14px; border-radius: var(--radius-sm); border: 1px solid var(--line);
+      background: var(--surface); outline: none; font-size: 14px; width: 240px;
+    }
+    .filter-bar input:focus { border-color: var(--accent); }
+    .filter-bar .hint { font-size: 13px; color: var(--text-2); }
+  </style>
+</head>
+<body>
+  <header class="admin-header">
+    <div class="container inner">
+      <h1>📚 管理后台</h1>
+      <nav class="links">
+        <a href="/admin">书籍管理</a>
+        <a href="/admin/upload">＋ 上传小说</a>
+        <a href="/admin/comments">评论管理</a>
+        <a href="/" target="_blank">前台首页 ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="filter-bar">
+      <input id="filter" placeholder="按书名筛选评论…" value="">
+      <span class="hint" id="countLabel"></span>
+    </div>
+    <table class="table" id="commentTable">
+      <thead>
+        <tr>
+          <th>所属书籍</th><th>昵称</th><th>内容</th><th>时间</th><th>操作</th>
+        </tr>
+      </thead>
+      <tbody id="commentBody"></tbody>
+    </table>
+    <div class="empty-state" id="empty" style="display:none">
+      <div class="emoji">💬</div>还没有任何评论
+    </div>
+  </main>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/admin-common.js"></script>
+  <script src="/js/admin-comments.js"></script>
+</body>
+</html>

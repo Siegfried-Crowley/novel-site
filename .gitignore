@@ -1,0 +1,23 @@
+# 依赖
+node_modules/
+
+# 数据库与上传源文件（备份 = 复制这两个）
+data/
+
+# 自定义封面（可重新上传）
+public/covers/
+
+# 日志 / 系统
+*.log
+.DS_Store
+
+# IDE / 工具
+.idea/
+.claude/
+.zcode/
+
+# 测试与调试临时文件
+big_test*.txt
+测试书*.txt
+_diag.js
+_reflow_proto.js

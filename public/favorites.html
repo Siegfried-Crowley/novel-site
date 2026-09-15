@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的收藏 · 公益书坊</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .fav-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 18px 14px; }
+    .fav-item { position: relative; }
+    .fav-remove {
+      position: absolute; top: 8px; left: 8px; z-index: 2;
+      width: 26px; height: 26px; border-radius: 50%; border: none;
+      background: rgba(0,0,0,.5); color: #fff; font-size: 14px; line-height: 1;
+      opacity: 0; transition: opacity .15s;
+    }
+    .fav-item:hover .fav-remove { opacity: 1; }
+    .fav-remove:hover { background: #e05b4a; }
+    .progress-line { font-size: 12px; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    @media (max-width: 640px) { .fav-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); } }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/"><span class="logo">📖</span><span>公益<em class="accent">书坊</em></span></a>
+      <nav class="nav">
+        <a href="/" data-page="home">首页</a>
+        <a href="/rank" data-page="rank">排行榜</a>
+        <a href="/list" data-page="list">全部小说</a>
+        <a href="/favorites" data-page="favorites">我的收藏</a>
+      </nav>
+      <div class="header-right">
+        <div class="search-box"><input type="text" placeholder="搜书名 / 作者…"><span class="icon">🔍</span></div>
+        <button class="theme-toggle" title="切换主题">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="section">
+      <div class="section-head">
+        <h2 class="section-title">我的收藏</h2>
+        <span style="color:var(--text-2);font-size:13px" id="favCount"></span>
+      </div>
+      <div class="fav-grid" id="favGrid"></div>
+      <div class="empty-state" id="empty" style="display:none">
+        <div class="emoji">❤️</div>还没有收藏任何书<br>
+        <a href="/list" style="color:var(--accent)">去逛逛 ›</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer container">
+    <p>公益免费阅读 · 本站内容仅供学习交流，版权归原作者所有</p>
+  </footer>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/favorites.js"></script>
+</body>
+</html>

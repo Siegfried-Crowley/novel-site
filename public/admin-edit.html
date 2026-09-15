@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>编辑书籍 · 管理后台</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .edit-wrap { display: grid; grid-template-columns: 340px 1fr; gap: 22px; margin-top: 22px; align-items: start; }
+    @media (max-width: 860px) { .edit-wrap { grid-template-columns: 1fr; } }
+    .panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+    .panel h3 { font-size: 15.5px; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .panel h3::before { content: ""; width: 3px; height: 15px; background: var(--accent); border-radius: 2px; }
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-size: 13px; color: var(--text-2); margin-bottom: 5px; }
+    .field input, .field select, .field textarea {
+      width: 100%; padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px;
+      background: var(--surface-2); outline: none; font-size: 14px;
+    }
+    .field textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); }
+    .cover-box { display: flex; gap: 14px; align-items: center; margin-bottom: 14px; }
+    .cover-box img { width: 96px; aspect-ratio: 3/4; object-fit: cover; border-radius: 6px; box-shadow: var(--shadow); }
+    .save-row { display: flex; gap: 10px; margin-top: 16px; }
+    .btn-sm { padding: 7px 16px; font-size: 13.5px; border-radius: 999px; border: none; cursor: pointer; font-weight: 600; }
+    .btn-sm.primary { background: var(--accent); color: #fff; }
+    .btn-sm.ghost { background: transparent; border: 1px solid var(--line); color: var(--text-2); }
+    .btn-sm.danger { background: transparent; border: 1px solid #e05b4a; color: #e05b4a; }
+    .btn-sm:disabled { opacity: .5; cursor: not-allowed; }
+    .chapter-item {
+      display: flex; align-items: center; gap: 8px; padding: 9px 10px; border: 1px solid var(--line);
+      border-radius: 8px; margin-bottom: 8px; background: var(--surface); font-size: 14px;
+    }
+    .chapter-item .idx { color: var(--text-2); font-size: 12.5px; width: 28px; flex-shrink: 0; }
+    .chapter-item .t { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .chapter-item .mini { border: none; background: transparent; color: var(--text-2); font-size: 13px; padding: 3px 7px; border-radius: 5px; flex-shrink: 0; }
+    .chapter-item .mini:hover { background: var(--surface-2); color: var(--text); }
+    .chapter-item .mini.danger:hover { background: rgba(224,91,74,.12); color: #e05b4a; }
+    .chapter-editor { border: 1px solid var(--accent); border-radius: 10px; padding: 16px; margin-bottom: 10px; background: var(--surface); }
+    .chapter-editor input { width: 100%; padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2); margin-bottom: 8px; font-size: 14.5px; outline: none; }
+    .chapter-editor textarea { width: 100%; min-height: 220px; padding: 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2); font-size: 14.5px; line-height: 1.8; resize: vertical; outline: none; }
+    .chapter-editor .actions { display: flex; gap: 8px; margin-top: 10px; }
+    .chapters-scroll { max-height: 620px; overflow-y: auto; padding-right: 4px; }
+    .reparse-box { margin-top: 18px; }
+    .reparse-box input { width: 100%; padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2); font-size: 13px; margin-bottom: 8px; outline: none; }
+    .reparse-preview { margin-top: 10px; font-size: 13px; color: var(--text-2); background: var(--surface-2); border-radius: 8px; padding: 10px 12px; line-height: 1.7; }
+  </style>
+</head>
+<body>
+  <header class="admin-header" style="border-bottom:1px solid var(--line);background:var(--surface)">
+    <div class="container" style="display:flex;align-items:center;gap:18px;height:58px">
+      <h1 style="font-size:17px;font-weight:700">✎ 编辑书籍</h1>
+      <nav style="margin-left:auto;display:flex;gap:14px;font-size:14px;color:var(--text-2)">
+        <a href="/admin/upload" style="color:var(--text-2)">上传</a>
+        <a href="/admin/comments" style="color:var(--text-2)">评论管理</a>
+        <a href="/admin" style="color:var(--text-2)">← 返回后台</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="empty-state" id="loading" style="padding-top:60px"><div class="emoji">⏳</div>加载中…</div>
+
+    <div class="edit-wrap" id="editWrap" style="display:none">
+      <!-- 左：书籍信息 -->
+      <div class="panel">
+        <h3>书籍信息</h3>
+        <div class="cover-box">
+          <img id="coverPreview" alt="封面">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <label class="btn-sm ghost" for="coverFile" style="text-align:center;cursor:pointer">换封面图片</label>
+            <input type="file" id="coverFile" accept="image/*" hidden>
+            <button class="btn-sm ghost" id="delCover">恢复默认封面</button>
+          </div>
+        </div>
+        <div class="field"><label>书名</label><input id="fTitle" placeholder="书名"></div>
+        <div class="field"><label>作者</label><input id="fAuthor" placeholder="作者"></div>
+        <div class="field"><label>分类</label><select id="fCategory"></select></div>
+        <div class="field"><label>状态</label>
+          <select id="fStatus">
+            <option value="serial">连载中</option>
+            <option value="finished">已完结</option>
+          </select>
+        </div>
+        <div class="field"><label>简介</label><textarea id="fDesc" placeholder="小说简介…"></textarea></div>
+        <div class="save-row">
+          <button class="btn-sm primary" id="saveInfo">保存修改</button>
+          <button class="btn-sm danger" id="deleteBook">删除本书</button>
+        </div>
+
+        <div class="reparse-box">
+          <h3>重新切分</h3>
+          <p style="font-size:12.5px;color:var(--text-2);margin-bottom:8px">原 TXT 切分错了？可用不同的章节正则重新切分。留空使用默认规则。</p>
+          <input id="reparseRegex" placeholder="自定义正则（可留空）">
+          <button class="btn-sm ghost" id="reparseBtn">重新切分并覆盖章节</button>
+          <div class="reparse-preview" id="reparsePreview" style="display:none"></div>
+        </div>
+
+        <div class="reparse-box">
+          <h3>自动排版</h3>
+          <p style="font-size:12.5px;color:var(--text-2);margin-bottom:8px">很多 TXT 是「固定宽度硬折行」——每行断在句子中间，阅读时碎片化。这里先检测，确认后自动把断行拼回完整段落（只重新分段，不增删文字）。</p>
+          <button class="btn-sm ghost" id="formatBtn">检测排版质量</button>
+          <div class="reparse-preview" id="formatPreview" style="display:none"></div>
+        </div>
+      </div>
+
+      <!-- 右：章节管理 -->
+      <div class="panel">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <h3 style="margin-bottom:0">章节管理</h3>
+          <button class="btn-sm primary" id="addChapter">＋ 新增章节</button>
+        </div>
+        <div class="chapters-scroll" id="chapterList"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/admin-common.js"></script>
+  <script src="/js/admin-edit.js"></script>
+</body>
+</html>

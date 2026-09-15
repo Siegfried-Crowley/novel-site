@@ -1,0 +1,33 @@
+{
+  "name": "novel-site",
+  "version": "1.0.0",
+  "description": "公益小说在线阅读站：一键上传 TXT → 自动解析 → 前台浏览阅读",
+  "main": "server.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "novel",
+    "reading",
+    "express",
+    "sqlite"
+  ],
+  "author": "",
+  "license": "MIT",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "better-sqlite3": "^13.0.3",
+    "compression": "^1.8.1",
+    "express": "^5.2.1",
+    "iconv-lite": "^0.7.3",
+    "jschardet": "^3.1.4",
+    "multer": "^2.2.0"
+  }
+}

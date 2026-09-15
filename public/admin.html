@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>管理后台 · 公益书坊</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .admin-header { border-bottom: 1px solid var(--line); background: var(--surface); }
+    .admin-header .inner { display: flex; align-items: center; gap: 18px; height: 58px; }
+    .admin-header h1 { font-size: 17px; font-weight: 700; }
+    .admin-header .links { margin-left: auto; display: flex; gap: 14px; font-size: 14px; color: var(--text-2); }
+    .admin-header .links a:hover { color: var(--accent); }
+    .table { width: 100%; border-collapse: collapse; margin-top: 20px; background: var(--surface); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+    .table th { text-align: left; font-size: 13px; color: var(--text-2); font-weight: 600; padding: 12px 14px; border-bottom: 1px solid var(--line); background: var(--surface-2); }
+    .table td { padding: 10px 14px; border-bottom: 1px solid var(--line); font-size: 14px; vertical-align: middle; }
+    .table tr:last-child td { border-bottom: none; }
+    .table tr:hover td { background: var(--surface-2); }
+    .tcover { width: 34px; aspect-ratio: 3/4; object-fit: cover; border-radius: 3px; }
+    .op-btn { border: none; background: transparent; color: var(--text-2); font-size: 13.5px; padding: 4px 10px; border-radius: 5px; }
+    .op-btn:hover { background: var(--accent-soft); color: var(--accent); }
+    .op-btn.danger:hover { background: rgba(224,91,74,.12); color: #e05b4a; }
+    .upload-hero { margin-top: 24px; padding: 26px; border: 2px dashed var(--line); border-radius: var(--radius); text-align: center; background: var(--surface); transition: border-color .2s; }
+    .upload-hero:hover { border-color: var(--accent); }
+    .upload-hero .big { font-size: 38px; }
+    .upload-hero .txt { color: var(--text-2); margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <header class="admin-header">
+    <div class="container inner">
+      <h1>📚 管理后台</h1>
+      <nav class="links">
+        <a href="/admin/upload">＋ 上传小说</a>
+        <a href="/admin/comments">评论管理</a>
+        <a href="/" target="_blank">前台首页 ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- 上传快捷入口 -->
+    <a class="upload-hero" href="/admin/upload" style="display:block">
+      <div class="big">📤</div>
+      <div class="txt">拖拽 TXT 一键上传，自动解析成小说</div>
+    </a>
+
+    <table class="table" id="bookTable">
+      <thead>
+        <tr>
+          <th></th><th>书名</th><th>作者</th><th>分类</th><th>状态</th>
+          <th>字数</th><th>阅读</th><th>收藏</th><th>最新章节更新</th><th>操作</th>
+        </tr>
+      </thead>
+      <tbody id="bookBody"></tbody>
+    </table>
+    <div class="empty-state" id="empty" style="display:none">
+      <div class="emoji">📭</div>还没有书籍，先上传一本 TXT 吧
+    </div>
+  </main>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/admin-common.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

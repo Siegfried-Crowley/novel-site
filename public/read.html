@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>阅读 · 公益书坊</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/reader.css">
+</head>
+<body class="reader-page">
+  <!-- 顶栏 -->
+  <header class="reader-topbar">
+    <div class="container reader-topbar-inner">
+      <div class="nav-links">
+        <a class="tbtn" id="backBtn" href="#" title="返回书籍详情">‹<span class="tl">详情</span></a>
+        <a class="tbtn" href="/" title="返回首页">🏠<span class="tl">首页</span></a>
+        <a class="tbtn nav-wide" href="/rank" title="排行榜">🏆<span class="tl">排行</span></a>
+        <a class="tbtn nav-wide" href="/favorites" title="我的收藏">⭐<span class="tl">收藏</span></a>
+      </div>
+      <span class="title-clip" id="topTitle">加载中…</span>
+      <div class="reader-settings">
+        <button class="tbtn" id="settingsBtn" title="阅读设置">⚙️</button>
+        <div class="settings-popover" id="settingsPopover">
+          <div class="setting-row">
+            <div class="setting-label">背景</div>
+            <div class="theme-swatches">
+              <button class="theme-swatch light" data-theme="light" title="白天"></button>
+              <button class="theme-swatch sepia" data-theme="sepia" title="羊皮纸"></button>
+              <button class="theme-swatch green" data-theme="green" title="护眼绿"></button>
+              <button class="theme-swatch dark" data-theme="dark" title="夜间"></button>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-label">字号</div>
+            <div class="seg" id="fontSizeSeg">
+              <button data-size="small" class="small">小</button>
+              <button data-size="medium" class="active">中</button>
+              <button data-size="large" class="large">大</button>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-label">字体</div>
+            <div class="seg" id="fontSeg">
+              <button data-font="default">默认</button>
+              <button data-font="serif">宋体</button>
+              <button data-font="hei">黑体</button>
+              <button data-font="kai">楷体</button>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-label">行距</div>
+            <div class="seg" id="lineSeg">
+              <button data-line="compact">紧凑</button>
+              <button data-line="normal" class="active">标准</button>
+              <button data-line="loose">宽松</button>
+            </div>
+          </div>
+          <div class="setting-row">
+            <button class="tbtn" id="immersiveBtn" style="width:100%;justify-content:center;border:1px solid var(--line);padding:7px 0;border-radius:8px">🧘 沉浸阅读</button>
+          </div>
+        </div>
+      </div>
+      <button class="tbtn" id="dirBtn" title="目录">📑</button>
+    </div>
+  </header>
+
+  <!-- 目录抽屉 -->
+  <div class="drawer-mask" id="drawerMask"></div>
+  <aside class="drawer" id="drawer">
+    <div class="drawer-head">
+      <span id="drawerBookTitle">目录</span>
+      <button id="drawerClose">✕</button>
+    </div>
+    <nav class="drawer-list" id="drawerList"></nav>
+  </aside>
+
+  <!-- 正文 -->
+  <main class="reader">
+    <div class="reader-head">
+      <div class="reader-book-title"><a href="#" id="bookTitle">…</a></div>
+      <h1 class="reader-chapter-title" id="chapterTitle">…</h1>
+    </div>
+    <div class="reader-content" id="content">加载中…</div>
+    <div class="reader-nav">
+      <button class="btn btn-outline" id="prevBtn">‹ 上一章</button>
+      <button class="btn" id="nextBtn">下一章 ›</button>
+    </div>
+    <div class="reader-progress-hint" id="progressHint"></div>
+  </main>
+
+  <div class="reader-float-actions">
+    <a class="float-act" id="floatBack" href="#" title="返回书籍详情">‹ 详情</a>
+    <a class="float-act" href="/" title="返回首页">🏠 首页</a>
+    <button class="reader-exit-immersive" id="exitImmersive">退出沉浸 ↑</button>
+  </div>
+  <div class="auto-next-float" id="autoNextFloat">正在加载下一章…</div>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/read.js"></script>
+</body>
+</html>

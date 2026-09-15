@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>上传小说 · 管理后台</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .drop-zone {
+      margin-top: 26px; padding: 60px 20px; border: 2.5px dashed var(--line); border-radius: 14px;
+      text-align: center; background: var(--surface); cursor: pointer; transition: all .2s;
+    }
+    .drop-zone.dragover { border-color: var(--accent); background: var(--accent-soft); transform: scale(1.01); }
+    .drop-zone .big { font-size: 46px; }
+    .drop-zone .title { font-size: 18px; font-weight: 700; margin-top: 10px; }
+    .drop-zone .hint { color: var(--text-2); font-size: 13.5px; margin-top: 6px; }
+    .result { margin-top: 26px; display: flex; flex-direction: column; gap: 14px; }
+    .result-item { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow); }
+    .result-item .head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .result-item h3 { font-size: 17px; }
+    .result-item .meta { color: var(--text-2); font-size: 13px; }
+    .badge { font-size: 11.5px; padding: 2px 9px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+    .badge.warn { background: rgba(245,166,35,.15); color: #d98a00; }
+    .preview { margin-top: 14px; border-top: 1px dashed var(--line); padding-top: 12px; }
+    .preview-title { font-size: 13px; color: var(--text-2); margin-bottom: 8px; }
+    .preview-item { font-size: 13.5px; padding: 4px 0; color: var(--text-2); }
+    .preview-item b { color: var(--text); font-weight: 600; }
+    .preview-item .fl { color: var(--text-2); opacity: .75; }
+    .result-actions { margin-top: 14px; display: flex; gap: 10px; }
+    .uploading { text-align: center; padding: 30px; color: var(--text-2); }
+  </style>
+</head>
+<body>
+  <header class="admin-header" style="border-bottom:1px solid var(--line);background:var(--surface)">
+    <div class="container" style="display:flex;align-items:center;gap:18px;height:58px">
+      <h1 style="font-size:17px;font-weight:700">📤 上传小说</h1>
+      <nav style="margin-left:auto;display:flex;gap:14px;font-size:14px;color:var(--text-2)">
+        <a href="/admin" style="color:var(--text-2)">书籍管理</a>
+        <a href="/admin/comments" style="color:var(--text-2)">评论管理</a>
+        <a href="/admin" style="color:var(--text-2)">← 返回后台</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="drop-zone" id="dropZone">
+      <div class="big">📥</div>
+      <div class="title">拖拽 TXT 文件到这里，或点击选择</div>
+      <div class="hint">支持多本批量上传 · 自动识别编码（UTF-8 / GBK）· 同名书籍将覆盖更新</div>
+      <input type="file" id="fileInput" accept=".txt,text/plain" multiple hidden>
+    </div>
+
+    <div id="resultBox" style="display:none">
+      <div class="section-head" style="margin-top:26px">
+        <h2 class="section-title">上传结果</h2>
+        <a class="section-more" href="/admin/upload">继续上传 ›</a>
+      </div>
+      <div class="result" id="resultList"></div>
+    </div>
+  </main>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/admin-common.js"></script>
+  <script src="/js/admin-upload.js"></script>
+</body>
+</html>

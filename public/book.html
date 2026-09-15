@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>书籍详情 · 公益书坊</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .book-hero { display: flex; gap: 28px; margin-top: 24px; }
+    .book-hero .cover { width: 210px; border-radius: 8px; box-shadow: var(--shadow); aspect-ratio: 3/4; object-fit: cover; flex-shrink: 0; }
+    .book-info { flex: 1; min-width: 0; }
+    .book-info h1 { font-size: 26px; font-weight: 800; }
+    .book-meta { display: flex; flex-wrap: wrap; gap: 8px 18px; color: var(--text-2); font-size: 14px; margin: 12px 0; }
+    .book-meta b { color: var(--text); font-weight: 600; }
+    .book-desc-box { color: var(--text-2); font-size: 14.5px; line-height: 1.8; margin: 8px 0 18px; white-space: pre-wrap; }
+    .book-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-outline { background: transparent; border: 1.5px solid var(--accent); color: var(--accent); }
+    .btn-outline.fav-on { background: var(--accent); color: #fff; }
+    .chapters { margin-top: 34px; }
+    .chapters-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px 16px; }
+    .chapters-list a {
+      font-size: 14px; color: var(--text-2); padding: 7px 10px; border-radius: var(--radius-sm);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: all 0.12s;
+    }
+    .chapters-list a:hover { background: var(--surface); color: var(--accent); }
+    .expand-btn { margin-top: 14px; border: 1px solid var(--line); background: var(--surface); color: var(--text-2); border-radius: 999px; padding: 7px 20px; font-size: 13.5px; }
+    .expand-btn:hover { color: var(--accent); border-color: var(--accent); }
+    /* 评分 */
+    .rating-row { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+    .stars { display: flex; gap: 2px; }
+    .stars .star { font-size: 24px; color: var(--line); cursor: pointer; transition: transform .1s, color .15s; border: none; background: none; padding: 0; line-height: 1; }
+    .stars .star:hover { transform: scale(1.2); }
+    .stars .star.on { color: #f5a623; }
+    .rating-text { font-size: 13.5px; color: var(--text-2); }
+    .rating-text b { color: #f5a623; font-size: 17px; }
+    /* 章节信息 */
+    .chapters-list a .c-info { float: right; font-size: 11.5px; color: var(--text-2); opacity: .75; margin-left: 8px; }
+    /* 评论区 */
+    .comment-form { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; margin-bottom: 20px; }
+    .comment-form .row { display: flex; gap: 10px; margin-bottom: 10px; }
+    .comment-form input, .comment-form textarea {
+      border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2);
+      padding: 9px 12px; font-size: 14px; outline: none; width: 100%;
+    }
+    .comment-form input { max-width: 200px; }
+    .comment-form textarea { resize: vertical; min-height: 80px; line-height: 1.7; }
+    .comment-form input:focus, .comment-form textarea:focus { border-color: var(--accent); }
+    .comment-item { padding: 14px 4px; border-bottom: 1px dashed var(--line); }
+    .comment-item:last-child { border-bottom: none; }
+    .comment-item .head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+    .comment-item .author { font-weight: 600; font-size: 14px; }
+    .comment-item .time { font-size: 12px; color: var(--text-2); }
+    .comment-item .body { font-size: 14px; color: var(--text); line-height: 1.8; word-break: break-word; }
+    @media (max-width: 640px) {
+      .book-hero { flex-direction: column; align-items: center; text-align: center; }
+      .book-hero .cover { width: 150px; }
+      .book-desc-box { text-align: left; }
+      .chapters-list { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/"><span class="logo">📖</span><span>公益<em class="accent">书坊</em></span></a>
+      <nav class="nav">
+        <a href="/" data-page="home">首页</a>
+        <a href="/rank" data-page="rank">排行榜</a>
+        <a href="/list" data-page="list">全部小说</a>
+        <a href="/favorites" data-page="favorites">我的收藏</a>
+      </nav>
+      <div class="header-right">
+        <div class="search-box"><input type="text" placeholder="搜书名 / 作者…"><span class="icon">🔍</span></div>
+        <button class="theme-toggle" title="切换主题">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="book-hero" id="hero"></div>
+    <section class="chapters section">
+      <div class="section-head">
+        <h2 class="section-title">章节目录</h2>
+        <span style="color:var(--text-2);font-size:13px" id="chCount"></span>
+      </div>
+      <div class="chapters-list" id="chapters"></div>
+      <div style="text-align:center"><button class="expand-btn" id="expandBtn" style="display:none">展开全部章节</button></div>
+    </section>
+
+    <!-- 同类推荐 -->
+    <section class="section">
+      <div class="section-head">
+        <h2 class="section-title">同类推荐</h2>
+        <a class="section-more" href="/list">换一批 ›</a>
+      </div>
+      <div class="book-grid" id="relatedGrid"></div>
+    </section>
+
+    <!-- 评论区 -->
+    <section class="section">
+      <div class="section-head">
+        <h2 class="section-title">书评</h2>
+        <span style="color:var(--text-2);font-size:13px" id="commentCount"></span>
+      </div>
+      <div class="comment-form">
+        <div class="row"><input id="commentName" placeholder="昵称（留空显示「匿名书友」）" maxlength="20"></div>
+        <div class="row"><textarea id="commentText" placeholder="写下你的书评…（最多 500 字）" maxlength="500"></textarea></div>
+        <div class="row"><button class="btn" id="commentSubmit" style="padding:7px 24px;font-size:13.5px">发表评论</button></div>
+      </div>
+      <div id="commentList"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer container">
+    <p>公益免费阅读 · 本站内容仅供学习交流，版权归原作者所有</p>
+  </footer>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/book.js"></script>
+</body>
+</html>
